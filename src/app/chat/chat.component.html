@@ -1,0 +1,39 @@
+<h1>Welcome {{curUser}}</h1>
+<br>
+<br>
+<div class="user-list">
+    <div *ngFor="let user of Users" (click)="openChat(user)" class="flex items-center mb-4">
+        <img src="../assets/pfp2.jpeg"  alt="Profile Pic" class="w-12 h-12 rounded-full mr-2">
+        <div>
+            <p class="font-semibold">{{ user.name }}</p>
+            <p class="text-sm text-gray-500">{{ user.email }}</p>
+        </div>
+    </div>
+</div>
+<br>
+<br>    
+  <div *ngIf="showChatWindow" class="fixed top-0 right-0 h-full w-1/4 bg-white shadow-lg flex flex-col">
+    <div *ngIf="selectedUser" class="chat-header bg-gray-200 p-4 flex justify-between items-center">
+      <h2>Chat with {{ selectedUser.email }}</h2>
+      <button class="text-white bg-red-500 px-2 py-1 rounded" (click)="closeChat()">Close Chat</button>
+    </div>
+    <div class="messages p-4 flex-1 overflow-y-auto">
+        <div *ngFor="let message of sortedMessages" class="message mb-2">
+          <div 
+            class="message-bubble p-2 rounded"
+            [ngClass]="{'bg-blue-100': message.sender_id !== curUserId, 'bg-green-100': message.sender_id === curUserId}">
+            {{ message.content }}
+          </div>
+        </div>
+      </div>
+      
+  
+    <div class="flex p-4">
+      <input type="text" #contentTxt class="flex-1 border border-gray-300 p-2 rounded-l">
+      <button class="bg-green-500 text-white px-4 py-2 rounded-r" (click)="postMessages(this.curUserId,selectedUser.id)">Send</button>
+    </div>
+  </div>
+  
+  
+
+<button class="bg-red-500 hover:bg-red-700 disabled:bg-slate-400 text-white font-bold py-2 px-4 rounded" (click)="signItOut()">LogOut</button>
